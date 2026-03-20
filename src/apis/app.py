@@ -8,6 +8,11 @@ from src.extractors import EXTRACTORS
 load_dotenv()
 app = Flask(__name__)
 PROJECT_ID = os.getenv("GCP_PROJECT_ID")
+if not PROJECT_ID:
+    raise RuntimeError(
+        "GCP_PROJECT_ID must be set (e.g. in .env or the deployment environment). "
+        "BigQuery requires a project ID."
+    )
 DATASET_ID = os.getenv("BIGQUERY_DATASET", "marketing_raw")
 bq = BigQueryAdvanced(PROJECT_ID, DATASET_ID)
 init_otel(app)
